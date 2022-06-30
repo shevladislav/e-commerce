@@ -1,0 +1,36 @@
+<div class="container">
+    <strong>Книги: {{ by_category }}</strong>
+    <br>
+    <br>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        {% for book in object_list %}
+            <div class="col">
+                <div class="card">
+                    <img src="{{ book.cover_photo.url }}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <strong style="font-size: 22px;"> <a style="text-decoration: none;"
+                                                             href="{{ book.get_absolute_url }}">{{ book.title }}</a>
+                        </strong>
+                        <p class="card-text">
+                            {% for author in book.author.all %}
+                                <a href="" style="text-decoration: none; font-size: 18px">
+                                    {{ author }}
+                                </a>
+                            {% endfor %}</p>
+                        <strong>Ціна: {{ book.price }}</strong>
+                        {% if book.pk in book_in_cart %}
+                            <button class="btn btn-success">
+                                <a style="text-decoration: none; color: black" href="{% url 'cart:open_cart' %}">Товар у кошику</a>
+                            </button>
+                        {% else %}
+                            <button class="btn btn-warning">
+                                <a style="text-decoration: none; color: black" href="{% url 'cart:cart_add' book.pk %}">Додати
+                                    в кошик</a></button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <br>
+    </div>
+</div>
