@@ -1,6 +1,8 @@
+from django.urls import reverse
+
 from django.views.generic import (
     ListView,
-    DetailView,
+    DetailView, FormView,
 )
 
 from .models import (
@@ -9,6 +11,7 @@ from .models import (
     Book,
 )
 
+from .forms import CustomerOrderForm
 from cart.cart import Cart
 
 
@@ -45,6 +48,8 @@ class SubCategoryDetailView(DetailView):
         context['category_list'] = Category.objects.all()
         context['object_list'] = Book.objects.filter(category=kwargs['object'])
         context['by_category'] = kwargs['object']
+        cart = Cart(self.request)
+        context['book_in_cart'] = cart.get_book_ids()
         return context
 
 
@@ -56,3 +61,28 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         return context
+
+
+class OrderingCreateView(FormView):
+    form_class = CustomerOrderForm
+    template_name = 'bookshop/ordering.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category_list'] = Category.objects.all()
+        data = self.request.session.get('ordering_data')
+        context['data'] = data
+        return context
+
+    def post(self, request, *args, **kwargs):
+        order_data = request.session['ordering_data'] = {}
+        order_data['mail'] = request.POST.get('mail')
+        order_data['city'] = request.POST.get('city')
+        order_data['post_department'] = request.POST.get('post_department')
+        order_data['phone_number'] = request.POST.get('phone_number')
+        order_data['session_key'] = request.session.__dict__.get('_SessionBase__session_key')
+
+        return super().post(request)
+
+    def get_success_url(self):
+        return reverse('payment:pay_view')

@@ -9,8 +9,10 @@ from .models import (
     Author,
     Interpreter,
     Illustrator,
+    CustomerOrder,
 )
 
+admin.site.register(CustomerOrder)
 admin.site.register(Category)
 admin.site.register(Subcategory)
 admin.site.register(BookSeries)

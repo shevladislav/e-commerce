@@ -165,3 +165,13 @@ class Illustrator(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CustomerOrder(models.Model):
+    order_items = models.TextField()
+    mail = models.CharField(max_length=100, verbose_name='Електронна пошта')
+    city = models.CharField(max_length=100, verbose_name='Місто доставки')
+    post_department = models.CharField(max_length=150, verbose_name='Поштове відділення(номер, адреса)')
+    phone_number = models.CharField(max_length=15, null=True, verbose_name='Номер телефона')
+    status_success = models.BooleanField(null=True)
+    total_price = models.IntegerField()

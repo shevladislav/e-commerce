@@ -25,7 +25,8 @@ SECRET_KEY = 'django-insecure-(i4y@r73co!^lauf4z)q2p)f#o*b^g^%5bz!d__j2t-qwnq_(5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['af3d-217-30-192-161.eu.ngrok.io', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://af3d-217-30-192-161.eu.ngrok.io']
 
 
 # Application definition
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
 
     'bookshop.apps.BookshopConfig',
     'cart.apps.CartConfig',
+    'liqpay_api',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LIQPAY_PUBLIC_KEY = 'sandbox_i70254939278'
+LIQPAY_PRIVATE_KEY = 'sandbox_ZMsdB8nedkL1feeTjDutiUypA6rZng87QeSFva72'

@@ -1,0 +1,23 @@
+{% extends 'bookshop/base/base.html' %}
+{% load dict_key %}
+
+{% block content %}
+    <div class="container">
+        <div class="row mt-4">
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label for="inputOrderingData" class="form-label">{{ field.label }}</label>
+                        <input type="text" name={{ field.name }} class="form-control" id="inputOrderingData"
+                               aria-describedby="emailHelp"
+                               value={{ data|get_item:field.name }}>
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Оплата</button>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

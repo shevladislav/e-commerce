@@ -1,4 +1,5 @@
 <div class="container">
+    <br>
     <strong>Книги: {{ by_category }}</strong>
     <br>
     <br>
@@ -17,10 +18,11 @@
                                     {{ author }}
                                 </a>
                             {% endfor %}</p>
-                        <strong>Ціна: {{ book.price }}</strong>
+                        <strong>Ціна: {{ book.price }} грн</strong>
                         {% if book.pk in book_in_cart %}
                             <button class="btn btn-success">
-                                <a style="text-decoration: none; color: black" href="{% url 'cart:open_cart' %}">Товар у кошику</a>
+                                <a style="text-decoration: none; color: black" href="{% url 'cart:open_cart' %}">Товар у
+                                    кошику</a>
                             </button>
                         {% else %}
                             <button class="btn btn-warning">
