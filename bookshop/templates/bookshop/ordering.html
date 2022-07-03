@@ -9,9 +9,15 @@
                 {% for field in form %}
                     <div class="mb-3">
                         <label for="inputOrderingData" class="form-label">{{ field.label }}</label>
-                        <input type="text" name={{ field.name }} class="form-control" id="inputOrderingData"
-                               aria-describedby="emailHelp"
-                               value={{ data|get_item:field.name }}>
+                        {% if data %}
+                            <input type="text" name={{ field.name }} class="form-control" id="inputOrderingData"
+                                   aria-describedby="emailHelp"
+                                   value={{ data|get_item:field.name }}>
+                        {% else %}
+                            <input type="text" name={{ field.name }} class="form-control" id="inputOrderingData"
+                                   aria-describedby="emailHelp"
+                            >
+                        {% endif %}
                     </div>
                 {% endfor %}
                 <button type="submit" class="btn btn-primary">Оплата</button>

@@ -53,7 +53,7 @@ class PayView(TemplateView):
             'description': description,
             'version': '3',
             'sandbox': 0,  # sandbox mode, set to 1 to enable it
-            'server_url': 'https://af3d-217-30-192-161.eu.ngrok.io/payment/pay-callback/',  # url to callback view
+            'server_url': 'https://eb93-217-30-192-161.eu.ngrok.io/payment/pay-callback/',  # url to callback view
             'info': json.dumps(info_data),
         }
 

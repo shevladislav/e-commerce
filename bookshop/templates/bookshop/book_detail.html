@@ -1,5 +1,154 @@
 {% extends 'bookshop/base/base.html' %}
 
 {% block content %}
-    <img src="{{ object.cover_photo.url }}" alt="">
+    <div class="container mb-3">
+        <div class="row">
+            <div class="col-sm">
+                <a style="text-decoration: none" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                         class="bi bi-house-fill" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd"
+                              d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+                        <path fill-rule="evenodd"
+                              d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>
+                    </svg>
+                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                     class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+                <a href="#" style="text-decoration: none">
+                    {{ topical_category }}
+                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                     class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+                <a href="#" style="text-decoration: none">
+                    {{ object.category }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container px-2">
+        <div class="row mb-3">
+            <div class="col">
+                <h3> {{ object.title }} </h3>
+            </div>
+        </div>
+
+        <div class="row gy-3">
+            <div class="col-sm">
+                <img style="max-width: 355px" src="{{ object.cover_photo.url }}" alt="">
+            </div>
+            <div style="border-bottom: 1px solid black" class="col-sm">
+                <strong>
+                    {{ object.book_type }} книга | Код товару {{ object.code_product }}
+                </strong>
+                <br><br>
+
+                <p>
+                    Автор:
+                    {% for author in object.author.all %}
+                        <a href="#">{{ author }}</a>
+                    {% endfor %}
+                </p>
+
+                <p>Видавництво:
+                    <a href="#">{{ object.publisher }}</a>
+                </p>
+                <p>Мова: {{ object.language }}</p>
+                <p>Рік видання: {{ object.publication_year }}</p>
+                {% if object.first_publication_year %}
+                    <p>Рік першого видання:{{ object.first_publication_year }}</p>
+                {% endif %}
+                <p>Тип книги: {{ object.book_type }}</p>
+            </div>
+
+            <div style="border-bottom: 1px solid black" class="col-sm">
+                <h3>{{ object.price }} грн</h3>
+                <div class="btn btn-warning">У кошик</div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-heart"
+                     viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                </svg>
+                <br><br>
+                <p>1111 людей додали у список бажань</p>
+
+
+                <p> Оплата Безготівкова, Visa/MasterCard</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <div style="border: 1px darkgray solid" class="row gy-3">
+            <div class="col-sm col-md">
+                <button style="background: darkgray" class="btn btn" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                    Усе про книжку
+                </button>
+            </div>
+            <div class="col-sm col-md">
+                <button style="background: darkgray" class="btn btn" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                    Характеристики
+                </button>
+            </div>
+            <div class="col-sm col-md">
+                <button style="background: darkgray" class="btn btn" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                    Про автора
+                </button>
+            </div>
+
+            <div class="collapse" id="collapseExample1">
+                <div class="card card-body">
+                    Усе про книжку Тореадори з Васюківки Культовий твір, який увійшов до переліку золотої класики
+                    української літератури. Свого часу повість «Тореадори з Васюківки» була включена до обов’язкової
+                    шкільної програми. Книга відзначена у «Почесному списку Андерсена» і перекладена двадцятьма мовами.
+                    Завдяки чудовому вмінню автора створювати гумористичні історії серія веселих оповідань часом
+                    доводить читачів до нестримного сміху. Книга Всеволода Нестайка «Тореадори з Васюківки» хоч і
+                    створювалася з розрахунком на дитячу та юнацьку аудиторію, але будь-яка доросла людина,
+                    ознайомившись зі змістом пригодницьких історій, прийде у захват і зарядиться відмінним настроєм.
+                    Сюжет і відгуки про книгу «Тореадори з Васюківки» Книга розповідає про шкільні роки двох нерозлучних
+                    друзів, Яви та Павлуші, які пристрасно бажають прославитися на весь світ. Цикл оповідань включає у
+                    себе три невеликі повісті, які раніше видавалися незалежно одна від одної і не пов’язані спільним
+                    сюжетом, тільки персонажами. Історія починається з відчайдушного інженерного проекту хлопців —
+                    спорудження гілки метрополітену під сільським свинарником. У результаті 50-кілограмова свиня
+                    провалюється у безодню «інженерного проекту» Яви і Павлуші. У книзі «Тореадори з Васюківки»
+                    українською мовою багато простих, але веселих та інтригуючих історій. Взяти, приміром, кориду
+                    хлопців з сільською коровою Контрибуцією, будівництво підводного човна або хитромудрий план з пошуку
+                    іноземних шпигунів зі свого села. При цьому в основі усіх творів знаходиться проста ідея — дружба і
+                    готовність прийти на допомогу людині, яка цього потребує. Познайомтеся з творчими, яскравими і
+                    самобутніми персонажами цієї пригодницької історії. Купити книгу «Тореадори з Васюківки» ви можете у
+                    нашому інтернет-магазині. Ви можете замовити як україномовний варіант книги, так і її переклад
+                    російською.
+                </div>
+            </div>
+
+            <div class="collapse" id="collapseExample2">
+                <div class="card card-body">
+                    2
+                </div>
+            </div>
+
+            <div class="collapse" id="collapseExample3">
+                <div class="card card-body">
+                    {% for author in object.author.all %}
+                        <h3>{{ author.name }}</h3>
+                        <p>
+                            {{ author.biography|truncatechars:200 }} <a href="#">Детальніше</a>
+                        </p>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}
