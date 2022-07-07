@@ -10,8 +10,10 @@ from .models import (
     Interpreter,
     Illustrator,
     CustomerOrder,
+    Review,
 )
 
+admin.site.register(Review)
 admin.site.register(CustomerOrder)
 admin.site.register(Category)
 admin.site.register(Subcategory)

@@ -1,5 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
+
+import math
 
 
 class Category(models.Model):
@@ -98,6 +101,7 @@ class Book(models.Model):
     edition = models.IntegerField(verbose_name='Тираж', blank=True, null=True)
     weight = models.IntegerField(verbose_name='Вага', blank=True, null=True)
     first_publication_year = models.IntegerField(verbose_name='Рік першого видання', blank=True, null=True)
+    rating = models.IntegerField(verbose_name='Рейтинг', default=0, blank=True, null=True)
 
     price = models.IntegerField(verbose_name='*Ціна')
     publication_year = models.IntegerField(verbose_name='*Рік видання')
@@ -118,11 +122,43 @@ class Book(models.Model):
 
     cover_photo = models.ImageField('*Фото', upload_to='img')
 
+    description = models.TextField(null=True, verbose_name='Усе про книжку')
+
     def __str__(self):
         return f'{self.title}: ({self.code_product})'
 
     def get_absolute_url(self):
         return reverse('book_detail', args=(self.pk,))
+
+    def average_rating(self):
+        review_list = [int(i.rating) for i in Review.objects.filter(book=self)]
+        rating = sum(review_list) / len(review_list)
+        return int(rating)
+
+    def absolute_average_rating(self):
+        review_list = [int(i.rating) for i in Review.objects.filter(book=self)]
+        rating = sum(review_list) / len(review_list)
+        return round(rating, 1)
+
+    def get_rating_by_grade(self):
+        review_list = [int(i.rating) for i in Review.objects.filter(book=self)]
+        length = len(review_list)
+        star_1, star_2, star_3, star_4, star_5 = [True for star in review_list if star in (1,)], \
+                                                 [True for star in review_list if star in (2,)], \
+                                                 [True for star in review_list if star in (3,)], \
+                                                 [True for star in review_list if star in (4,)], \
+                                                 [True for star in review_list if star in (5,)]
+        star_1, star_2, star_3, star_4, star_5 = sum(star_1) * 100 // length, \
+                                                 sum(star_2) * 100 // length, \
+                                                 sum(star_3) * 100 // length, \
+                                                 sum(star_4) * 100 // length, \
+                                                 sum(star_5) * 100 // length
+
+        return star_1, star_2, star_3, star_4, star_5
+
+    def count_review(self):
+        review_list = ['.' for i in Review.objects.filter(book=self)]
+        return len(review_list)
 
 
 class Author(models.Model):
@@ -175,3 +211,19 @@ class CustomerOrder(models.Model):
     phone_number = models.CharField(max_length=15, null=True, verbose_name='Номер телефона')
     status_success = models.BooleanField(null=True)
     total_price = models.IntegerField()
+
+
+class Review(models.Model):
+    RATING = (
+        ('1', 'Жахливо'),
+        ('2', 'Погано'),
+        ('3', 'Середньо'),
+        ('4', 'Добре'),
+        ('5', 'Чудово')
+    )
+
+    title = models.CharField('*Заголовок', max_length=100)
+    body = models.TextField('*Рецензія', max_length=2500)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    rating = models.CharField(choices=RATING, max_length=100)

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.urls import reverse
 
 from django.views.generic import (
@@ -9,6 +10,7 @@ from .models import (
     Category,
     Subcategory,
     Book,
+    Review,
 )
 
 from .forms import CustomerOrderForm
@@ -59,8 +61,14 @@ class BookDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #context['category_list'] = Category.objects.all()
+        context['category_list'] = Category.objects.all()
         context['topical_category'] = Category.objects.get(subcategory=kwargs['object'].category)
+        review_list = Review.objects.filter(book=kwargs['object'])
+        paginator = Paginator(review_list, 2)
+        page_number = self.request.GET.get('page')
+        context['paginator'] = paginator
+        context['reviews'] = paginator.get_page(page_number)
+
         return context
 
 
