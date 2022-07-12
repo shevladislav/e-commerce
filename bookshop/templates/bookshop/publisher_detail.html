@@ -1,0 +1,31 @@
+{% extends 'bookshop/base/base.html' %}
+
+{% block  content %}
+    <div class="container mb-5">
+        <div class="row">
+            <h1>
+                Видавництво книг {{ object.title }}
+            </h1>
+            <div class="col-sm col-md-3">
+                <img src="{{ object.photo.url }}" alt="">
+            </div>
+            <div class="col">
+                {{ object.info|truncatechars:500 }}
+                <p>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Читати повністю
+                    </button>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        {{ object.info|slice:"500:" }}
+                    </div>
+                </div>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    {% include 'bookshop/includes/card_grid.html' %}
+    {% include 'bookshop/includes/pagination.html' %}
+{% endblock %}

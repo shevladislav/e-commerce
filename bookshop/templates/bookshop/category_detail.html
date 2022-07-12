@@ -1,11 +1,18 @@
 {% extends 'bookshop/base/base.html' %}
 
 {% block content %}
-    {% for subcategory in subcategory_list %}
-        <a href="{{ subcategory.get_absolute_url }}">
-            <p>
-                {{ subcategory }}
-            </p>
-        </a>
-    {% endfor %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                {% for subcategory in subcategory_list %}
+                    <a style="text-decoration: none" href="{{ subcategory.get_absolute_url }}">
+                        <p>
+                            {{ subcategory }}
+                        </p>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -11,8 +11,12 @@ from .models import (
     Illustrator,
     CustomerOrder,
     Review,
+    LikeReview,
+    DislikeReview,
 )
 
+admin.site.register(DislikeReview)
+admin.site.register(LikeReview)
 admin.site.register(Review)
 admin.site.register(CustomerOrder)
 admin.site.register(Category)

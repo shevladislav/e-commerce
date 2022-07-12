@@ -1,0 +1,30 @@
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-sm text-center">
+                Сторінка {{ object_list.number }}
+                із {{ object_list.paginator.num_pages }}
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+                <nav aria-label="...">
+                    <ul class="pagination">
+                        {% if reviews.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ object_list.previous_page_number }}">попередня</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">попередня</a>
+                            </li>
+                        {% endif %}
+                        {% if reviews.has_next %}
+                            <a class="page-link" href="?page={{ object_list.next_page_number }}">наступна</a>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">наступна</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>

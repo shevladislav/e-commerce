@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-(i4y@r73co!^lauf4z)q2p)f#o*b^g^%5bz!d__j2t-qwnq_(5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['e901-217-30-192-161.eu.ngrok.io', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://e901-217-30-192-161.eu.ngrok.io']
+ALLOWED_HOSTS = ['d980-217-30-192-161.eu.ngrok.io', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://d980-217-30-192-161.eu.ngrok.io']
 
 
 # Application definition
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'crispy_forms',
 
     'bookshop.apps.BookshopConfig',
     'cart.apps.CartConfig',
@@ -108,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'uk'
 
 TIME_ZONE = 'UTC'
 
@@ -132,3 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LIQPAY_PUBLIC_KEY = 'sandbox_i70254939278'
 LIQPAY_PRIVATE_KEY = 'sandbox_ZMsdB8nedkL1feeTjDutiUypA6rZng87QeSFva72'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.urls import reverse
 
@@ -172,6 +173,9 @@ class Author(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('author_detail', args=(self.pk,))
+
 
 class Publisher(models.Model):
     title = models.CharField('*Назва видавництва', max_length=100)
@@ -181,12 +185,18 @@ class Publisher(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('publisher_detail', args=(self.pk,))
+
 
 class BookSeries(models.Model):
     title = models.CharField('*Серія книг', max_length=100)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('bookseries_detail', args=(self.pk,))
 
 
 class Interpreter(models.Model):
@@ -211,6 +221,20 @@ class CustomerOrder(models.Model):
     phone_number = models.CharField(max_length=15, null=True, verbose_name='Номер телефона')
     status_success = models.BooleanField(null=True)
     total_price = models.IntegerField()
+    date = models.DateField(auto_now_add=True, null=True)
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return f'{self.date}'
+
+    def get_absolute_url(self):
+        return reverse('order_detail', args=(self.pk,))
 
 
 class Review(models.Model):
@@ -227,3 +251,37 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     rating = models.CharField(choices=RATING, max_length=100)
+
+    def __str__(self):
+        return f'{self.user}: {self.title}'
+
+    def count_like(self):
+        like_list = LikeReview.objects.filter(review=self)
+        return len(like_list)
+
+    def count_dislike(self):
+        like_list = DislikeReview.objects.filter(review=self)
+        return len(like_list)
+
+
+class LikeDislikeManager(models.Manager):
+
+    def get_or_none(self, **kwargs):
+        try:
+            return self.get(**kwargs)
+        except ObjectDoesNotExist:
+            return None
+
+
+class LikeReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+
+    objects = LikeDislikeManager()
+
+
+class DislikeReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+
+    objects = LikeDislikeManager()

@@ -1,0 +1,24 @@
+{% extends 'bookshop/base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block  content %}
+    {% if user_is_active %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Ви вже увійшли</h1>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="container col-sm col-md-6 my-3">
+            <h1>Вхід</h1>
+            <form method="post">
+                {% csrf_token %}
+                {% crispy form %}
+            </form>
+            <br>
+            <a style="text-decoration: none" href="{% url 'registration_view' %}">Немає облікового запису?</a>
+        </div>
+    {% endif %}
+{% endblock %}

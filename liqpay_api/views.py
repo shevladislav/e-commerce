@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -32,6 +33,10 @@ class PayView(TemplateView):
             'session_key': ordering_data['session_key']
         }
 
+        user_active = self.request.user.is_active
+        if user_active:
+            info_data['pk'] = self.request.user.pk
+
         amount, description, info_body = 0, 'Оплата зи книги:', ''
 
         for k, v in cart.items():
@@ -53,7 +58,7 @@ class PayView(TemplateView):
             'description': description,
             'version': '3',
             'sandbox': 0,  # sandbox mode, set to 1 to enable it
-            'server_url': 'https://eb93-217-30-192-161.eu.ngrok.io/payment/pay-callback/',  # url to callback view
+            'server_url': 'https://d980-217-30-192-161.eu.ngrok.io/payment/pay-callback/',  # url to callback view
             'info': json.dumps(info_data),
         }
 
@@ -94,6 +99,9 @@ class PayCallbackView(View):
                 s.save()
             else:
                 order.status_success = False
+
+            if business_data.get('pk'):
+                order.user = User.objects.get(pk=business_data.get('pk'))
 
             order.save()
 

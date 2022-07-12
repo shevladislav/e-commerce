@@ -1,0 +1,17 @@
+{% extends 'bookshop/base/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Інформація:</h1>
+                <p>
+                    {{ object.order_items }}
+                </p>
+                <h5>
+                    Дата замовлення: {{ object.date }}
+                </h5>
+            </div>
+        </div>
+    </div>
+{% endblock %}

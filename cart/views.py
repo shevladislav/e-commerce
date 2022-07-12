@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 
 from bookshop.models import Book, Category
+from bookshop.utilities import user_is_active
 from .cart import Cart
 
 
@@ -44,12 +45,14 @@ def open_cart(request):
     for value in display_cart.values():
         total_price += value['total_price']
 
-    return render(request, 'bookshop/cart.html', {
+    context = {
         'display_cart': display_cart,
         'books_ids': books_ids,
         'total_price': total_price,
-        'category_list': Category.objects.all()
-    })
+        'category_list': Category.objects.all(),
+    }
+    context = context | user_is_active(request)
+    return render(request, 'bookshop/cart.html', context)
 
 
 def clear_cart(request):

@@ -1,0 +1,14 @@
+{% extends 'bookshop/base/base.html' %}
+
+{% block  content %}
+    <div class="container mb-5">
+        <div class="row">
+            <h1>
+                Серія книг {{ object.title }}
+            </h1>
+        </div>
+    </div>
+
+    {% include 'bookshop/includes/card_grid.html' %}
+    {% include 'bookshop/includes/pagination.html' %}
+{% endblock %}
