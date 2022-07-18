@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 
-from bookshop.models import CustomerOrder
+from bookshop.models import CustomerOrder, Review
 
 
 class CustomerOrderForm(forms.ModelForm):
@@ -35,13 +35,15 @@ class RegistrationUserForm(forms.ModelForm):
         password_has_num = [True for sym in password_one if sym.isdigit()]
 
         if password_one != password_two:
-            raise forms.ValidationError('Passwords do not match')
+            raise forms.ValidationError('Паролі не співпадають')
         if len(password_one) < 8:
-            raise forms.ValidationError('Password length must be greater than 8 characters')
-        if not password_one[0].isalpha() and not password_one[0].isupper():
-            raise forms.ValidationError('The first character must be a capital letter')
+            raise forms.ValidationError('Пароль має бути довше 8 символів')
+        if not password_one[0].isalpha():
+            raise forms.ValidationError('Перший символ у паролі має бути великою літерою')
+        if not password_one[0].isupper():
+            raise forms.ValidationError('Перший символ у паролі має бути великою літерою')
         if not sum(password_has_num) > 0:
-            raise forms.ValidationError('Password must contain at least one number')
+            raise forms.ValidationError('Пароль повинен містити хоча б одне число')
 
         return password_two
 
@@ -50,7 +52,7 @@ class RegistrationUserForm(forms.ModelForm):
         check_mail = User.objects.filter(email=email)
 
         if len(check_mail) > 0:
-            raise forms.ValidationError('This email address is not available')
+            raise forms.ValidationError('Ця електронна адреса вже використовується')
 
         return email
 
@@ -79,3 +81,15 @@ class LoginUserForm(forms.Form):
             raise forms.ValidationError('Неправильний пароль')
 
         return self.cleaned_data
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['title', 'body', 'rating']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('залишити рецензiю', 'Залишити рецензiю'))

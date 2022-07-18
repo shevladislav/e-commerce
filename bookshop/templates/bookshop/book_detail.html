@@ -411,9 +411,6 @@
                              aria-valuemin="0" aria-valuemax="100"><strong>1</strong></div>
                     </div>
                 </div>
-                <div class="col-sm text-center">
-                    <button type="submit" class="btn btn-light">Написати рецензію</button>
-                </div>
             {% else %}
                 <div class="col-sm col-md col-lg-4 col-xl-4 col-xxl-4">
                     <div class="progress">
@@ -446,17 +443,21 @@
                              aria-valuemin="0" aria-valuemax="100"><strong>1</strong></div>
                     </div>
                 </div>
-                <div class="col-sm text-center">
-                    <button type="submit" class="btn btn-light">Написати рецензію</button>
-                </div>
             {% endif %}
+            <div class="col-sm text-center">
+                <button type="submit" class="btn btn-light">
+                    <a style="text-decoration: none" href="{% url 'review_form' object.pk %}">
+                        Написати рецензію
+                    </a>
+                </button>
+            </div>
         </div>
     </div>
 
     <div class="container mt-5">
         {% for review in reviews %}
             <div class="row gy-4">
-                <div class="col-sm-2 text-center">
+                <div class="col-sm-2 text-center mb-4">
                     {% if review.rating == '1' %}
                         <svg style="color: gold"
                              xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"

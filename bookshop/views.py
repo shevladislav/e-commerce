@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse
 
 from django.views.generic import (
@@ -19,7 +19,7 @@ from .models import (
     LikeReview, DislikeReview, CustomerOrder, Author, Publisher, BookSeries,
 )
 
-from .forms import CustomerOrderForm, RegistrationUserForm, LoginUserForm
+from .forms import CustomerOrderForm, RegistrationUserForm, LoginUserForm, ReviewForm
 from cart.cart import Cart
 from .utilities import user_is_active
 
@@ -73,7 +73,7 @@ class BookDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['category_list'] = Category.objects.all()
         context['topical_category'] = Category.objects.get(subcategory=kwargs['object'].category)
-        review_list = Review.objects.filter(book=kwargs['object'])
+        review_list = Review.objects.filter(book=kwargs['object']).order_by('-pk')
         paginator = Paginator(review_list, 2)
         page_number = self.request.GET.get('page')
         context['paginator'] = paginator
@@ -244,3 +244,26 @@ class CustomerOrderDetail(DetailView):
         context = context | user_is_active(self.request)
         context['category_list'] = Category.objects.all()
         return context
+
+
+@login_required(login_url='/booklover/login')
+def form_review(request, pk):
+    context = {'form': ReviewForm()}
+    context['category_list'] = Category.objects.all()
+    context = context | user_is_active(request)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            current_review = Review(
+                title=request.POST.get('title'),
+                body=request.POST.get('body'),
+                rating=request.POST.get('rating'),
+                book=get_object_or_404(Book, pk=pk),
+                user=request.user,
+            )
+            current_review.save()
+            return HttpResponseRedirect(reverse('book_detail', args=(pk,)))
+        form = ReviewForm()
+
+    return render(request, 'bookshop/review_form.html', context)

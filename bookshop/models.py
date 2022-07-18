@@ -3,7 +3,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.urls import reverse
 
-import math
 
 
 class Category(models.Model):
@@ -246,11 +245,12 @@ class Review(models.Model):
         ('5', 'Чудово')
     )
 
-    title = models.CharField('*Заголовок', max_length=100)
-    body = models.TextField('*Рецензія', max_length=2500)
+    title = models.CharField('Заголовок', max_length=100)
+    body = models.TextField('Рецензія', max_length=2500)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    rating = models.CharField(choices=RATING, max_length=100)
+    rating = models.CharField('Рейтинг', choices=RATING, max_length=100)
+
 
     def __str__(self):
         return f'{self.user}: {self.title}'
